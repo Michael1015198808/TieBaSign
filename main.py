@@ -176,7 +176,7 @@ def client_sign(bduss, tbs, fid, kw):
 def send_email(sign_list):
     def unconfigured(key):
         return key not in ENV or ENV[key] == ""
-    if any(map(uncofigured, ['HOST', 'FROM', 'TO', 'AUTH'])):
+    if any(map(unconfigured, ['HOST', 'FROM', 'TO', 'AUTH'])):
         logger.error("未配置邮箱")
         return
     HOST = ENV['HOST']
