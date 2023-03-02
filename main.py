@@ -170,7 +170,13 @@ def client_sign(bduss, tbs, fid, kw):
     data = copy.copy(SIGN_DATA)
     data.update({BDUSS: bduss, FID: fid, KW: kw, TBS: tbs, TIMESTAMP: str(int(time.time()))})
     data = encodeData(data)
-    res = s.post(url=SIGN_URL, data=data, timeout=5).json()
+    for _ in range(10):
+        res = s.post(url=SIGN_URL, data=data, timeout=5).json()
+        if res.get("error_code") in [
+            "0", # 成功
+            "160002" # 亲，你之前已经签过了
+        ]:
+            break
     return res
 
 def send_email(sign_list):
